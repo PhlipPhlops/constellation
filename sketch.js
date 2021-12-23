@@ -3,7 +3,7 @@ let WIDTH = 800
 
 this.nodes = [];
 this.neighbors = {};
-this.numNodes = 1000;
+this.numNodes = 50;
 
 let neighborField = new NeighborField(10, 10)
 

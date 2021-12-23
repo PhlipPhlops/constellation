@@ -22,7 +22,7 @@ function Node() {
   }
   
   this.connect = () => {
-    // this.neighbors = this.kNearestNeighbors(this.k)
+    this.neighbors = this.kNearestNeighbors(this.k)
     // this.neighbors = neighborField.lookForNeighbors(this, this.k)
   }
   
