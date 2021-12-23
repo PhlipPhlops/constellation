@@ -1,5 +1,7 @@
 function NeighborField(fw, fh) {
+  // Tool used for quicker node-neighbor lookup
   // Field of size fieldWidth by fieldHeight
+  //
   this.field = Array(fh).fill(Array(fw).fill(new Array()))
 
   this.consoleTable = function() {

@@ -1,33 +1,16 @@
-let HEIGHT = 800
-let WIDTH = 800
+let HEIGHT = 812 * 4
+let WIDTH = 375 * 4
 
-this.nodes = [];
-this.neighbors = {};
-this.numNodes = 50;
-
-let neighborField = new NeighborField(10, 10)
+let network = new Network()
 
 function setup() {
   createCanvas(WIDTH, HEIGHT);
-  neighborField.consoleTable()
-
-  
-  for (let i = 0; i < numNodes; i++) {
-    let node = new Node();
-    nodes.push(node)
-  }
-  
-  for (let i = 0; i < numNodes; i++) {
-    nodes[i].connect()
-  }
+  network.spawn()
 }
 
 function draw() {
   background(0);
-  
-  for (let i = 0; i < numNodes; i++) {
-    nodes[i].update()
-    nodes[i].show()
-  }
-  neighborField.consoleTable()
+
+  network.update()
+  network.show()
 }
