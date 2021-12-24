@@ -1,33 +1,21 @@
-function makeNodeId() {
-    // Returns random 6 char string
-    let length = 6
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
-}
-
-
 function Network() {
     this.root = null // also though of as roots for traversal
     this.nodes = []
-    this.edges = {
-        // Designed to be called edgeMap.from['node1'].to['node2'] <- {data}
-        'from': {
+    this.neighborField = new NeighborField(3, 3)
+    // this.edges = {
+    //     // Designed to be called edgeMap.from['node1'].to['node2'] <- {data}
+    //     'from': {
 
-        }
-    }
-    this.seenEdges = {
-        'from': {
+    //     }
+    // }
+    // this.seenEdges = {
+    //     'from': {
 
-        }
-    }
+    //     }
+    // }
 
     // Config
-    this.numNodes = 100;
+    this.numNodes = 3;
 
     this.connect = () => {
         // Connect every node in the network to its nearest neighbor
@@ -45,18 +33,20 @@ function Network() {
         
         for (let i = 0; i < this.nodes.length; i++) {
             let fromN = this.nodes[i]
-            let k = floor(Math.random() * 4) + 1
+            this.neighborField.replaceOnMap(fromN)
             
-            let neighbors = kNearestNeighbors(fromN, k)
+            let neighbors = kNearestNeighbors(fromN, fromN.k)
             fromN.neighbors = neighbors
+
+            // let neighbors = nieghbordField.kNearestNeighbors(fromN, fromN.k)
+            // fromN.neighbors = neighbors
         }
     }
 
     this.spawn = () => {
         // For now gene is number of nodes in network
         for (let i = 0; i < this.numNodes; i++) {
-            let node = new Node(makeNodeId());
-            this.nodes.push(node)
+            this.nodes.push(new Node())
         }
     }
 
@@ -67,10 +57,18 @@ function Network() {
         this.connect()
     }
 
+    let frameCounter = 0
     this.show = () => {
         for (let i = 0; i < this.nodes.length; i++) {
             this.nodes[i].show()
         }
+
+
+        // Runs ~once per second
+        if (frameCounter % 60 == 0) {
+            this.neighborField.consoleTable()
+        }
+        frameCounter++
     }
 
 }

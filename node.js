@@ -1,8 +1,10 @@
-function Node(tag) {
-  this.tag = tag
+let topSpeed = 2
+
+function Node() {
+  this.tag = makeNodeId()
   this.x = floor(Math.random() * WIDTH)
   this.y = floor(Math.random() * HEIGHT)
-  this.vel = createVector(Math.random(-1,1), Math.random(-1,1))
+  this.vel = createVector(Math.random() * topSpeed, Math.random() * topSpeed)
   this.k = floor(Math.random() * 6) + 2
   
   this.neighbors = [];
@@ -31,4 +33,16 @@ function Node(tag) {
     strokeWeight(16)
     point(createVector(this.x, this.y))
   }
+}
+
+function makeNodeId() {
+  // Returns random 6 char string
+  let length = 6
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+ }
+ return result;
 }
