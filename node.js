@@ -1,6 +1,13 @@
 let topSpeed = 2
 
-function Node() {
+/* displayConfig {
+    edgeColor: [r, g, b],
+    nodeColor: [r, g, b]
+
+  }
+*/
+
+function Node(displayConfig) {
   this.tag = makeNodeId()
   this.x = floor(Math.random() * WIDTH)
   this.y = floor(Math.random() * HEIGHT)
@@ -21,7 +28,8 @@ function Node() {
   }
   
   this.show = () => {
-    stroke(255, 16, 240)
+    let ec = displayConfig['edgeColor']
+    stroke(ec[0], ec[1], ec[2])
     strokeWeight(4)
     // draw line between here and neighbor
     for (let i = 0; i < this.neighbors.length; i++) {
@@ -29,7 +37,8 @@ function Node() {
     }
 
     // Draw point after neihgbor lines to draw on top
-    stroke(4, 255, 247)
+    let nc = displayConfig['nodeColor']
+    stroke(nc[0], nc[1], nc[2])
     strokeWeight(16)
     point(createVector(this.x, this.y))
   }
