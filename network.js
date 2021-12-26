@@ -2,20 +2,7 @@ function Network(displayConfig) {
     this.root = null // also though of as roots for traversal
     this.nodes = []
     this.neighborField = new NeighborField(100, 100)
-    // this.edges = {
-    //     // Designed to be called edgeMap.from['node1'].to['node2'] <- {data}
-    //     'from': {
-
-    //     }
-    // }
-    // this.seenEdges = {
-    //     'from': {
-
-    //     }
-    // }
-
-    // Config
-    this.numNodes = 10;
+    this.numNodes = 500;
 
     this.connect = () => {
         // Connect every node in the network to its nearest neighbor
@@ -50,10 +37,10 @@ function Network(displayConfig) {
             this.nodes[i].show()
         }
 
-
         // Runs ~once per second
         if (frameCounter % 60 == 0) {
             // this.neighborField.consoleTable()
+            // console.log(frameRate())
         }
         frameCounter++
     }

@@ -1,4 +1,4 @@
-let topSpeed = 2
+let topSpeed = 10
 
 /* displayConfig {
     edgeColor: [r, g, b],
@@ -11,7 +11,7 @@ function Node(displayConfig) {
   this.tag = makeNodeId()
   this.x = floor(Math.random() * WIDTH)
   this.y = floor(Math.random() * HEIGHT)
-  this.vel = createVector(Math.random() * topSpeed, Math.random() * topSpeed)
+  this.vel = createVector((Math.random()) * topSpeed, (Math.random()) * topSpeed)
   this.k = floor(Math.random() * 6) + 2
   
   this.neighbors = [];
