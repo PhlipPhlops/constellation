@@ -49,11 +49,9 @@ function NeighborField(fw, fh) {
   }
 
   this.kNearestNeighbors = function(node, k) {
-    // CONSIDER: worst case for rastor lookup
-    // is no neighbors on the map
-    let neighbors = []
-
-    // bring field into scope
+    // CONSIDER: worst case for rastor lookup is no neighbors on the map
+    
+    // Bring field into scope
     let field = this.field
 
     // Grab the current node position
@@ -61,66 +59,46 @@ function NeighborField(fw, fh) {
     let my = cellPos[0]
     let mx = cellPos[1]
 
-    let layer = 0 // Layer will increment for every rastor lookup
+    // Create neighbors and fill with center field
+    let neighbors = [...field[my][mx]]
+
+    let layer = 1 // Layer will increment for every rastor lookup
                   // up to (incl.) half the highest dimension (fh or fw)
     // First find the smallest layer with >k nodes in the field
 
-    function getSubMap(my, mx, layer) {
+    while (neighbors.length < k+1 && layer <= (max(fh, fw) / 2)) {
       // Grab coords (and handle edge detection)
       // top - t, bottom - b, left - l, right -r
-      let lx = mx - layer
-      if (lx < 0) lx = 0
-      let rx = mx + layer
-      if (rx >= fw) rx = fw - 1
+      let lx = mx - layer,
+          rx = mx + layer,
+          ty = my - layer,
+          by = my + layer
 
-      let ty = my - layer
-      if (ty < 0) ty = 0
-      let by = my + layer
-      if (by >= fh) by = fh - 1
+      for (let y = ty; y <= by; y++) {
 
-      return field.slice(ty, by+1).map(row => row.slice(lx, rx+1))
-    }
+        // Edge detection
+        if (y < 0) y = 0 // Jump down to top edge of field
+        if (y >= fh) break // y beyond bottom edge of field, stop
 
-    let count = 0
-    // Watch these while loop stopping points; responsible for speed
-    while (count < k+1 && layer <= (max(fh,fw) / 2)) {
-      // Recounts on every layer lookup
-      count = 0
+        for (let x = lx; x <= rx; x++) {
+          
+          // Edge detection
+          if (x < 0) x = 0 // Jump to left edge of field
+          if (x >= fw) break // x beyond right edge of field, stop
 
-      let twoDslice = getSubMap(my, mx, layer)
-      
-      // Now count available nodes
-      // Remember the current node is always in this slice
-      for (let i = 0; i < twoDslice.length; i++) {
-        let row = twoDslice[i]
-        for (let j = 0; j < row.length; j++) {
-          let cell = twoDslice[i][j]
-          count += cell.size
+          if (y != ty && y != by) {
+            // For non top or bottom rows, x only checks two positions
+            if (lx >= 0) neighbors.push(...field[y][lx])
+            if (rx < fw) neighbors.push(...field[y][rx])
+            break
+          }
+          // Otherwise, check every x in the row
+          neighbors.push(...field[y][x])
         }
       }
       layer++
     }
 
-    // Now that you have the appropriate layer value, add all cells in that slice to an array
-    let twoDslice = getSubMap(my, mx, layer)
-    // Now add available nodes to a list
-    for (let i = 0; i < twoDslice.length; i++) {
-      let row = twoDslice[i]
-      for (let j = 0; j < row.length; j++) {
-        let cell = twoDslice[i][j]
-        neighbors.push(...cell)
-      }
-    }
-
-    // Finally, sort the potential neighbors and return the first k of them
-    let x = node.x;
-    let y = node.y;
-    neighbors.sort(function(a, b) {
-        let dista = sqrt(Math.pow(a.x - x, 2) + Math.pow(a.y - y, 2))
-        let distb = sqrt(Math.pow(b.x - x, 2) + Math.pow(b.y - y, 2))
-        return dista - distb
-    })
-    
     return neighbors.slice(1, k+1)
   }
 }

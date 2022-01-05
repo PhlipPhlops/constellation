@@ -11,20 +11,22 @@ function Node(displayConfig) {
   this.tag = makeNodeId()
   this.x = floor(Math.random() * WIDTH)
   this.y = floor(Math.random() * HEIGHT)
-  this.vel = createVector((Math.random()) * topSpeed, (Math.random()) * topSpeed)
+  this.vel = createVector((Math.random() - 0.5) * topSpeed, (Math.random() - 0.5) * topSpeed)
   this.k = floor(Math.random() * 6) + 2
   
   this.neighbors = [];
   
   this.update = () => {
+    return
     // Random vel
+    // this.vel = createVector((Math.random() - 0.5) * topSpeed, (Math.random() - 0.5) * topSpeed)
     this.x += this.vel.x
     this.y += this.vel.y
     
     if (this.x > WIDTH) this.x = 0;
     if (this.y > HEIGHT) this.y = 0;
-    if (this.x < 0) this.x = WIDTH;
-    if (this.y < 0) this.y = HEIGHT;
+    if (this.x < 0) this.x = WIDTH - 1;
+    if (this.y < 0) this.y = HEIGHT - 1;
   }
   
   this.show = () => {

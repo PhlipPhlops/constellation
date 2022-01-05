@@ -1,8 +1,8 @@
 function Network(displayConfig) {
     this.root = null // also though of as roots for traversal
     this.nodes = []
-    this.neighborField = new NeighborField(100, 100)
-    this.numNodes = 500;
+    this.neighborField = new NeighborField(10, 20)
+    this.numNodes = 100;
 
     this.connect = () => {
         // Connect every node in the network to its nearest neighbor
@@ -22,13 +22,17 @@ function Network(displayConfig) {
         for (let i = 0; i < this.numNodes; i++) {
             this.nodes.push(new Node(displayConfig))
         }
+        for (let i = 0; i < this.nodes.length; i++) {
+            this.neighborField.replaceOnMap(this.nodes[i])
+        }
+        this.connect()
     }
 
     this.update = () => {
         for (let i = 0; i < this.nodes.length; i++) {
             this.nodes[i].update()
         }
-        this.connect()
+        // this.connect()
     }
 
     let frameCounter = 0
